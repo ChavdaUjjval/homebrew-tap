@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Tap this checkout
+        run: |
+          mkdir -p "$(brew --repository)/Library/Taps/chavdaujjval"
+          ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/chavdaujjval/homebrew-tap"
+
+      - name: Style and audit
+        run: |
+          brew style chavdaujjval/tap
+          brew audit --cask --online chavdaujjval/tap/copycat
+
+      - name: Install and uninstall
+        run: |
+          brew install --cask chavdaujjval/tap/copycat
+          test -d /Applications/Copycat.app
+          test -z "$(xattr -p com.apple.quarantine /Applications/Copycat.app 2>/dev/null)"
+          brew uninstall --cask chavdaujjval/tap/copycat
