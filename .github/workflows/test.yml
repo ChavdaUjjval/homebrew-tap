@@ -18,14 +18,20 @@ jobs:
           mkdir -p "$(brew --repository)/Library/Taps/chavdaujjval"
           ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/chavdaujjval/homebrew-tap"
 
+      # The exact command in the README, on a tap nobody has trusted yet.
+      - name: Install with the README command
+        run: |
+          brew install chavdaujjval/tap/copycat
+          test -d /Applications/Copycat.app
+          test -z "$(xattr -p com.apple.quarantine /Applications/Copycat.app 2>/dev/null)"
+
       - name: Style and audit
         run: |
+          brew trust --cask chavdaujjval/tap/copycat
           brew style chavdaujjval/tap
           brew audit --cask --online chavdaujjval/tap/copycat
 
-      - name: Install and uninstall
+      - name: Uninstall
         run: |
-          brew install --cask chavdaujjval/tap/copycat
-          test -d /Applications/Copycat.app
-          test -z "$(xattr -p com.apple.quarantine /Applications/Copycat.app 2>/dev/null)"
           brew uninstall --cask chavdaujjval/tap/copycat
+          test ! -d /Applications/Copycat.app
