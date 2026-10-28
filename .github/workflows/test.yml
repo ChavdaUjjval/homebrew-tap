@@ -10,8 +10,12 @@ permissions:
 jobs:
   install:
     runs-on: macos-15
+    env:
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}   # avoids the shared runner's API rate limit
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Tap this checkout
         run: |
