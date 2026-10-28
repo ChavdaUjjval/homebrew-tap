@@ -1,6 +1,6 @@
 cask "copycat" do
-  version "1.0.3"
-  sha256 "3b067633d0bf0a85fcd900c363a9a09882dcf1d9448c1ad036ba236dc89cb3aa"
+  version "1.1.0"
+  sha256 "24741779596a4fcd6e927c9593a722ce0b69efad522ea7b465a566fe0de5334c"
 
   url "https://github.com/ChavdaUjjval/copycat/releases/download/v#{version}/Copycat.dmg"
   name "Copycat"
